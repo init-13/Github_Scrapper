@@ -19,7 +19,9 @@ function getObj (html, selector){
 
 }
 
-function gotolink(url, selecTool , obj){
+function gotolink(url, html , obj){
+
+    let selecTool = cheerio.load(html);
 
     let hrefl = selecTool(obj).attr('href');
 
