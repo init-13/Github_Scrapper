@@ -1,0 +1,14 @@
+Scrap Featured Topics :
+
+3 first topics 
+
+
+fetch 8 repositry Link for each
+
+
+for each link -> first five top issues text copy
+
+
+Folder-> TOPIC NAME -> 8 repo folder -> pdf of 5 top issues
+
+
