@@ -10,6 +10,8 @@ request(url,cb);
 function cb(err,res,body){
     if(err) console.log(err);
     else {
+        
+        
         handleHTML(body);
     }
     
@@ -17,11 +19,14 @@ function cb(err,res,body){
 
 function handleHTML(html){
 
-    let topicsarr = utility.getObj(html,"f3 lh-condensed mb-0 mt-1 Link--primary");
-
-    for(let i =0 ;i<topicsarr.length;i++){
+    let topicsarr = utility.getObj(html,'a[class="no-underline flex-grow-0"]');
+    console.log(topicsarr.length);
+    
+    for(let i =0 ;i<3;i++){
         let linktopic = utility.gotolink(url,html,topicsarr[i]);
-        utility.handletopic(linktopic);
+        
+        console.log(linktopic);
+        ;
     }
 
 
