@@ -50,8 +50,31 @@ function handleLink(url){
         
         for (let i =0;i<8;i++){
             let repoLink = gotolink("https://github.com/",html,rlinks[i]);
-            console.log(repoLink)
+            GetIssues(repoLink);
             
+        }
+    }
+
+    function GetIssues(url){
+        url+='/issues'
+   
+        request(url,cb);
+        
+        function cb(err,res,body){
+            if(err) console.log(err);
+            else getisu(body);
+        }
+
+        function getisu(html){
+
+            let selecTool = cheerio.load("html");
+            
+            let isuLinks = getObj(html,'a[class="Link--primary v-align-middle no-underline h4 js-navigation-open markdown-title"]');
+            
+            for(let i=0;i<5;i++){
+        
+                write2pdf(selecTool(isuLinks[i]).text()) , topic,repo);
+            }
         }
     }
 
