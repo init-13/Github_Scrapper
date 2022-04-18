@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const cheerio = require("cheerio");
+const request = require("request");
 
 function makeFolder(name){
 
@@ -21,6 +22,7 @@ function getObj (html, selector){
 
 function gotolink(url, html , obj){
 
+
     let selecTool = cheerio.load(html);
 
     let hrefl = selecTool(obj).attr('href');
@@ -31,6 +33,32 @@ function gotolink(url, html , obj){
 
 }
 
+function handleLink(url){
+    
+    request(url,cb);
+    function cb (err,res,body){
+        if(err) console.log(err);
+        else{
+            //console.log(body);
+            fetchURL(body);
+        }        
+    }
+
+    function fetchURL(html){
+        
+        let rlinks = getObj(html,'a[class="text-bold wb-break-word"]');
+        
+        for (let i =0;i<8;i++){
+            let repoLink = gotolink("https://github.com/",html,rlinks[i]);
+            console.log(repoLink)
+            
+        }
+    }
+
+
+}
+
 module.exports = {makeFolder : makeFolder,
 getObj : getObj,
-gotolink : gotolink} ;
+gotolink : gotolink,
+handleLink : handleLink} ;
