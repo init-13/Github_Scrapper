@@ -86,6 +86,8 @@ function handleLink(topicName, url){
             for(let i=0;i<6;i++){
                 
                 let issueName = selecTool(isuLinks[i]).text() ;
+                let issueURL = gotolink("https://github.com",html,isuLinks[i]);
+                issueName+="\n"+issueURL
                 console.log(issueName+" || "+ topicName +" || "+ repoName);
                 issues.push(issueName);
                 
