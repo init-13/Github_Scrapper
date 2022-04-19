@@ -22,15 +22,15 @@ function handleHTML(html){
 
     utility.makeFolder("ISSUES")
 
-    let topicsarr = utility.getObj(html,'a[class="no-underline flex-grow-0"]');
+    let topicsarr = utility.getObj(html,'a[class="no-underline flex-1 d-flex flex-column"]');
     console.log(topicsarr.length);
     
     for(let i =0 ;i<3;i++){
         let linktopic = utility.gotolink(mainurl,html,topicsarr[i]);
-        
-        console.log(linktopic);
-        utility.handleLink(linktopic);
-        ;
+        let topicName = utility.extractText(html,topicsarr[i]).split('\n')[1].trim();
+        console.log(topicName+""+linktopic);
+        utility.handleLink(topicName, linktopic);
+    
     }
 
 

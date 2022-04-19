@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const cheerio = require("cheerio");
 const request = require("request");
+const write2pdf = require("makepdf");
 
 function makeFolder(name){
 
@@ -27,13 +28,18 @@ function gotolink(url, html , obj){
 
     let hrefl = selecTool(obj).attr('href');
 
-    return url +hrefl;
+    return url + hrefl;
 
 
 
 }
 
-function handleLink(url){
+function extractText(body,obj){
+    let SelecTool = cheerio.load(body);
+    return SelecTool(obj).text();
+}
+
+function handleLink(topicName, url){
     
     request(url,cb);
     function cb (err,res,body){
@@ -50,12 +56,15 @@ function handleLink(url){
         
         for (let i =0;i<8;i++){
             let repoLink = gotolink("https://github.com/",html,rlinks[i]);
-            GetIssues(repoLink);
+            let repoName = extractText(html,rlinks[i]).trim('\n');
+            console.log(repoName);
+            
+            GetIssues(repoName,repoLink);
             
         }
     }
 
-    function GetIssues(url){
+    function GetIssues(repoName,url){
         url+='/issues'
    
         request(url,cb);
@@ -72,8 +81,13 @@ function handleLink(url){
             let isuLinks = getObj(html,'a[class="Link--primary v-align-middle no-underline h4 js-navigation-open markdown-title"]');
             
             for(let i=0;i<5;i++){
-        
-                write2pdf(selecTool(isuLinks[i]).text()) , topic,repo);
+                
+                let issueName = selecTool(isuLinks[i]).text() ;
+                console.log(issueName+" || "+ topicName +" || "+ repoName);
+                write2pdf(topicName, repoName, issueName);
+                
+                
+                
             }
         }
     }
@@ -84,4 +98,6 @@ function handleLink(url){
 module.exports = {makeFolder : makeFolder,
 getObj : getObj,
 gotolink : gotolink,
-handleLink : handleLink} ;
+handleLink : handleLink,
+extractText : extractText
+} ;
