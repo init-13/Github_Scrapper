@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const cheerio = require("cheerio");
 const request = require("request");
-const write2pdf = require("makepdf");
+const {write2pdf} = require("./makepdf");
 
 function makeFolder(name){
 
@@ -40,6 +40,8 @@ function extractText(body,obj){
 }
 
 function handleLink(topicName, url){
+
+    makeFolder("ISSUES/"+topicName);
     
     request(url,cb);
     function cb (err,res,body){
@@ -65,6 +67,7 @@ function handleLink(topicName, url){
     }
 
     function GetIssues(repoName,url){
+        makeFolder("ISSUES/"+topicName+"/"+repoName);
         url+='/issues'
    
         request(url,cb);
@@ -79,16 +82,18 @@ function handleLink(topicName, url){
             let selecTool = cheerio.load("html");
             
             let isuLinks = getObj(html,'a[class="Link--primary v-align-middle no-underline h4 js-navigation-open markdown-title"]');
-            
-            for(let i=0;i<5;i++){
+            let issues = [];
+            for(let i=0;i<6;i++){
                 
                 let issueName = selecTool(isuLinks[i]).text() ;
                 console.log(issueName+" || "+ topicName +" || "+ repoName);
-                write2pdf(topicName, repoName, issueName);
+                issues.push(issueName);
+                
                 
                 
                 
             }
+            write2pdf(topicName, repoName, issues);
         }
     }
 
